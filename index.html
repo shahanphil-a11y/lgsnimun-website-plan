@@ -1,322 +1,562 @@
 <!DOCTYPE html>
 <html lang="en">
-  
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="fQZBgkNOJM2yLVMnZfFx0D_EiYS6mDdZ_NFZitCHRRM" />
-  <meta charset="UTF-8">
-  <title>LGSARCMUN | Lahore Grammar School Architect Engineers Society Campus MUN Society</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="-s27yWNajHXCgxJkhRhR4tbqWdsBPXi0kaWNI391QQ8" />
+  <title>LGSARCMUN | Lahore Grammar School Architect Society Campus MUN Society</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="https://i.postimg.cc/8z71pB0x/Screenshot-2026-01-14-093930-removebg-preview.png" type="image/png">
 
   <style>
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #151a39;
+      background:
+        radial-gradient(circle at top left, rgba(124,58,237,.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(34,211,238,.14), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(16,185,129,.10), transparent 26%),
+        linear-gradient(180deg, #050816 0%, #080b1d 30%, #0b1023 60%, #050816 100%);
+      color: white;
+      overflow-x: hidden;
     }
-    .font-serif {
-      font-family: 'Playfair Display', serif;
+    .serif { font-family: 'Playfair Display', serif; }
+    .glass {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.25);
+    }
+    .soft-glow {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.08),
+        0 20px 80px rgba(124,58,237,.15),
+        0 0 60px rgba(34,211,238,.10);
+    }
+    .mask-fade {
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+      mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px) scale(.98);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .floating {
+      animation: float 8s ease-in-out infinite;
+    }
+    .floating-delay {
+      animation: float 10s ease-in-out infinite;
+      animation-delay: 1.5s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-14px) translateX(4px); }
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .spotlight {
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      border-radius: 9999px;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle, rgba(124,58,237,.18) 0%, rgba(34,211,238,.10) 25%, transparent 68%);
+      filter: blur(22px);
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+    }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.85), transparent 95%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.85), transparent 95%);
+    }
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shine::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.18), transparent);
+      transform: translateX(-120%);
+      transition: transform .8s ease;
+    }
+    .btn-shine:hover::after {
+      transform: translateX(120%);
+    }
+    .num {
+      font-variant-numeric: tabular-nums;
     }
   </style>
-  <link rel="icon" href="https://i.postimg.cc/8z71pB0x/Screenshot-2026-01-14-093930-removebg-preview.png
-" type="image/png">
-  <link rel="icon" href="https://example.com/path-to-your-image.png" type="image/png">
 </head>
 
-<body class="text-white overflow-x-hidden">
+<body class="min-h-screen text-white selection:bg-purple-400 selection:text-white">
+  <div id="spotlight" class="spotlight hidden lg:block"></div>
 
-<!-- HERO SECTION -->
-<section class="relative min-h-screen flex flex-col justify-center items-center text-center px-6 bg-[#151a39]">
+  <div class="fixed inset-0 pointer-events-none z-0 grid-bg opacity-40"></div>
 
-  <!-- World Map Background -->
-  <div class="absolute inset-0 opacity-10 pointer-events-none">
-    <img src="worldmap.svg" class="w-full h-full object-cover" alt="">
-  </div>
+  <header class="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
+    <nav class="mx-auto max-w-7xl glass soft-glow rounded-full px-4 md:px-6 py-3 flex items-center justify-between gap-3">
+      <a href="#home" class="flex items-center gap-3 min-w-0">
+        <img src="https://i.postimg.cc/8z71pB0x/Screenshot-2026-01-14-093930-removebg-preview.png" alt="LGSARCMUN Logo" class="w-9 h-9 md:w-10 md:h-10 object-contain rounded-full">
+        <div class="min-w-0">
+          <p class="text-sm md:text-base font-extrabold tracking-wide leading-none">LGSARCMUN</p>
+          <p class="text-[10px] md:text-xs text-white/60 leading-none mt-1 truncate">Architect Society Campus MUN</p>
+        </div>
+      </a>
 
-  <img src="https://i.postimg.cc/8z71pB0x/Screenshot-2026-01-14-093930-removebg-preview.png
-" alt="LGSNIMUN Logo" class="w-44 mb-8 drop-shadow-lg">
-
-  <h1 class="font-serif text-5xl md:text-6xl font-bold tracking-wide mb-4">
-    LGSARCMUN
-  </h1>
-
-  <h2 class="text-lg md:text-2xl mb-6">
-    Lahore Grammar School – Architect Society Campus <br>
-    Model United Nations Society
-  </h2>
-
-  <p class="text-white/80 text-base md:text-xl mb-10">
-    Cultivating diplomacy, leadership, and global awareness.
-  </p>
-  
-<div class="flex gap-4">
-  <a href="#join-form" class="bg-black/60 px-6 py-3 rounded-lg font-semibold border border-[#5644a1] hover:bg-[#231d36] transition">
-    Join the Society
-  </a>
-
-  <a href="#about" class="bg-[#5644a1] px-6 py-3 rounded-lg font-semibold hover:bg-[#231d36] border border-[#5644a1] transition">
-    Explore Our Work
-  </a>
-</div>
-  
-</section>
-
-<!-- ABOUT SECTION -->
-<section id="about" class="bg-gradient-to-tr from-black via-[#151a39] to-[#231d36] py-20 px-6 text-center">
-
-  <h2 class="font-serif text-4xl mb-6">About Us</h2>
-
-  <p class="max-w-2xl mx-auto text-white/80 mb-12">
-    LGSARCMUN is the official Model United Nations society of Lahore Grammar School Nasheman-e-Iqbal.
-    We focus on training delegates, participating in national conferences, crisis simulations, UNSC strategy sessions, policy drafting workshops, and leadership grooming.
-  </p>
-
-  <div class="flex justify-center gap-12 flex-wrap text-center">
-
-    <div>
-      <h3 class="text-3xl font-serif text-[#5644a1]" data-target="78">0</h3>
-      <p class="text-sm text-white/70">Members</p>
-    </div>
-
-    <div>
-      <h3 class="text-3xl font-serif text-[#5644a1]" data-target="22">0</h3>
-      <p class="text-sm text-white/70">Conferences Attended</p>
-    </div>
-
-    <div>
-      <h3 class="text-3xl font-serif text-[#5644a1]" data-target="18">0</h3>
-      <p class="text-sm text-white/70">Awards Earned</p>
-    </div>
-
-    <div>
-      <h3 class="text-3xl font-serif text-[#5644a1]" data-target="12">0</h3>
-      <p class="text-sm text-white/70">Committees Simulated</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- WHAT WE DO -->
-<section id="join-form" class="bg-[#151a39] py-20 px-6">
-  <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
-
-    <div class="bg-black/50 backdrop-blur-md border border-[#5644a1] p-6 rounded-lg hover:bg-[#231d36] transition">
-      <h3 class="font-serif text-xl mb-2">Delegate Training</h3>
-      <p class="text-white/70 text-sm">Structured sessions to refine diplomatic skill and argumentation.</p>
-    </div>
-
-    <div class="bg-black/50 backdrop-blur-md border border-[#5644a1] p-6 rounded-lg hover:bg-[#231d36] transition">
-      <h3 class="font-serif text-xl mb-2">Crisis Simulations</h3>
-      <p class="text-white/70 text-sm">High-pressure strategic simulations replicating real global crises.</p>
-    </div>
-
-    <div class="bg-black/50 backdrop-blur-md border border-[#5644a1] p-6 rounded-lg hover:bg-[#231d36] transition">
-      <h3 class="font-serif text-xl mb-2">UNSC Strategy Sessions</h3>
-      <p class="text-white/70 text-sm">Advanced-level geopolitical negotiation and veto training.</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ACHIEVEMENTS -->
-<section class="bg-gradient-to-t from-[#231d36] to-[#151a39] py-20 px-6">
-  <h2 class="font-serif text-4xl text-center mb-12">Our Achievements</h2>
-
-  <div class="max-w-3xl mx-auto border-l-2 border-[#5644a1] pl-6 space-y-10">
-
-    <div>
-      <h4 class="font-serif text-xl">2023</h4>
-      <p class="font-semibold">Participated in</p>
-      <p class="text-white/70 text-sm">TSMUN, UCPMUN Lahore</p>
-    </div>
-
-    <div>
-      <h4 class="font-serif text-xl">2024</h4>
-      <p class="font-semibold">20+ National Conferences</p>
-      <p class="text-white/70 text-sm">Delegates excelled across Pakistan</p>
-    </div>
-
-    <div>
-      <h4 class="font-serif text-xl">2025</h4>
-      <p class="font-semibold">UNSC & Crisis Simulations</p>
-      <p class="text-white/70 text-sm">Internal strategic milestone</p>
-    </div>
-
-  </div>
-</section>
-
-  <section style="background-color:#000; padding:4rem 1rem; color:white;">
-  
-  <div style="max-width:1100px; margin:auto;">
-    
-    <h2 style="text-align:center; font-size:2.5rem; margin-bottom:2rem; font-family:serif;">
-      Executive Council
-    </h2>
-
-    <div style="
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
-      gap:2rem;
-    ">
-
-      <div style="
-        background:#111;
-        padding:1.5rem;
-        border-radius:8px;
-        text-align:center;
-        transition:0.3s;
-      ">
-        <h3 style="font-size:1.3rem; margin-bottom:0.5rem;">President</h3>
-        <p>Shayan Ahmad</p>
+      <div class="hidden md:flex items-center gap-6 text-sm text-white/75">
+        <a href="#about" class="hover:text-white transition">About</a>
+        <a href="#features" class="hover:text-white transition">Features</a>
+        <a href="#achievements" class="hover:text-white transition">Achievements</a>
+        <a href="#council" class="hover:text-white transition">Council</a>
+        <a href="#join" class="hover:text-white transition">Join</a>
       </div>
 
-      <div style="
-        background:#111;
-        padding:1.5rem;
-        border-radius:8px;
-        text-align:center;
-        transition:0.3s;
-      ">
-        <h3 style="font-size:1.3rem; margin-bottom:0.5rem;">President</h3>
-        <p>Muhammad Shahan Hussain</p>
+      <a href="#join" class="btn-shine inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 via-violet-600 to-cyan-500 px-4 md:px-5 py-2 text-sm font-semibold shadow-lg shadow-purple-900/30 hover:scale-[1.02] active:scale-[0.98] transition">
+        Apply
+      </a>
+    </nav>
+  </header>
+
+  <main class="relative z-10">
+    <section id="home" class="relative min-h-screen flex items-center justify-center px-6 pt-28 pb-16 overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[44rem] h-[44rem] rounded-full bg-purple-600/20 blur-3xl floating"></div>
+        <div class="absolute top-1/4 -left-24 w-[28rem] h-[28rem] rounded-full bg-cyan-500/12 blur-3xl floating-delay"></div>
+        <div class="absolute bottom-0 right-0 w-[24rem] h-[24rem] rounded-full bg-emerald-400/10 blur-3xl floating"></div>
       </div>
 
-      <div style="
-        background:#111;
-        padding:1.5rem;
-        border-radius:8px;
-        text-align:center;
-        transition:0.3s;
-      ">
-        <h3 style="font-size:1.3rem; margin-bottom:0.5rem;">Secretary General</h3>
-        <p>Huzaifa Fawad</p>
-      </div>
+      <div class="max-w-7xl w-full grid lg:grid-cols-2 gap-14 items-center">
+        <div class="reveal">
+          <div class="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-xs md:text-sm text-white/75 mb-6">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            The official MUN society of Lahore Grammar School Architect Society Campus
+          </div>
 
+          <h1 class="serif text-5xl md:text-7xl lg:text-8xl font-black leading-[0.92] tracking-tight">
+            <span class="bg-gradient-to-r from-white via-purple-200 to-cyan-200 text-transparent bg-clip-text">LGSARCMUN</span>
+          </h1>
+
+          <p class="mt-6 text-lg md:text-2xl text-white/80 max-w-2xl leading-relaxed">
+            Elite diplomacy, modern leadership, and high-level debate for the next generation of delegates, strategists, and global thinkers.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="#join" class="btn-shine rounded-2xl bg-white text-slate-950 px-6 py-3 font-bold hover:scale-[1.03] active:scale-[0.98] transition">
+              Join the Society
+            </a>
+            <a href="#about" class="rounded-2xl glass px-6 py-3 font-semibold hover:bg-white/10 hover:scale-[1.02] transition">
+              Explore More
+            </a>
+          </div>
+
+          <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+            <div class="glass rounded-3xl p-4 text-center">
+              <div class="num text-3xl md:text-4xl font-black text-white">78+</div>
+              <p class="text-xs md:text-sm text-white/60 mt-1">Members</p>
+            </div>
+            <div class="glass rounded-3xl p-4 text-center">
+              <div class="num text-3xl md:text-4xl font-black text-cyan-300">22+</div>
+              <p class="text-xs md:text-sm text-white/60 mt-1">Conferences</p>
+            </div>
+            <div class="glass rounded-3xl p-4 text-center">
+              <div class="num text-3xl md:text-4xl font-black text-purple-300">18+</div>
+              <p class="text-xs md:text-sm text-white/60 mt-1">Awards</p>
+            </div>
+            <div class="glass rounded-3xl p-4 text-center">
+              <div class="num text-3xl md:text-4xl font-black text-emerald-300">12+</div>
+              <p class="text-xs md:text-sm text-white/60 mt-1">Committees</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal lg:justify-self-end">
+          <div class="relative mx-auto max-w-xl">
+            <div class="absolute -inset-1 rounded-[2rem] bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 blur-2xl opacity-30"></div>
+            <div class="relative glass rounded-[2rem] p-6 md:p-8 soft-glow overflow-hidden">
+              <div class="absolute inset-0 opacity-20 pointer-events-none">
+                <img src="worldmap.svg" alt="" class="w-full h-full object-cover mask-fade">
+              </div>
+
+              <div class="relative">
+                <div class="flex items-center justify-between mb-6">
+                  <div>
+                    <p class="text-xs uppercase tracking-[0.3em] text-white/55">Next Gen Diplomacy</p>
+                    <h2 class="serif text-2xl md:text-3xl font-bold mt-1">Where strategy meets style</h2>
+                  </div>
+                  <div class="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 border border-white/10">2026</div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <div class="rounded-3xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 p-5 hover:scale-[1.02] transition">
+                    <p class="text-white/55 text-xs uppercase tracking-[0.25em]">Mission</p>
+                    <p class="mt-3 text-lg font-semibold leading-relaxed">Build confident speakers, sharp researchers, and calm negotiators.</p>
+                  </div>
+                  <div class="rounded-3xl bg-gradient-to-br from-purple-500/20 to-cyan-500/10 border border-white/10 p-5 hover:scale-[1.02] transition">
+                    <p class="text-white/55 text-xs uppercase tracking-[0.25em]">Style</p>
+                    <p class="mt-3 text-lg font-semibold leading-relaxed">A fusion of diplomatic luxury, futuristic glow, and modern minimalism.</p>
+                  </div>
+                  <div class="rounded-3xl bg-white/5 border border-white/10 p-5 sm:col-span-2 hover:scale-[1.01] transition">
+                    <div class="flex flex-wrap items-center gap-3">
+                      <span class="inline-flex items-center gap-2 rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-semibold text-emerald-300 border border-emerald-400/20">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Active Community
+                      </span>
+                      <span class="inline-flex items-center gap-2 rounded-full bg-cyan-400/15 px-3 py-1 text-xs font-semibold text-cyan-300 border border-cyan-400/20">
+                        Global Affairs
+                      </span>
+                      <span class="inline-flex items-center gap-2 rounded-full bg-purple-400/15 px-3 py-1 text-xs font-semibold text-purple-300 border border-purple-400/20">
+                        Crisis & UNSC
+                      </span>
+                    </div>
+                    <p class="mt-4 text-white/75 leading-relaxed">
+                      Internal training, policy drafting, public speaking, crisis simulations, and conference preparation designed for ambitious delegates.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-4 border-y border-white/10 overflow-hidden">
+      <div class="marquee-track text-sm md:text-base font-semibold text-white/70 gap-8">
+        <span class="px-4">TSMUN</span>
+        <span class="px-4">UCPMUN</span>
+        <span class="px-4">GCMUN</span>
+        <span class="px-4">LUMUN</span>
+        <span class="px-4">NIMUN</span>
+        <span class="px-4">Crisis Simulations</span>
+        <span class="px-4">UNSC Strategy</span>
+        <span class="px-4">Delegate Training</span>
+        <span class="px-4">Policy Drafting</span>
+        <span class="px-4">LGSARCMUN</span>
+
+        <span class="px-4">TSMUN</span>
+        <span class="px-4">UCPMUN</span>
+        <span class="px-4">GCMUN</span>
+        <span class="px-4">LUMUN</span>
+        <span class="px-4">NIMUN</span>
+        <span class="px-4">Crisis Simulations</span>
+        <span class="px-4">UNSC Strategy</span>
+        <span class="px-4">Delegate Training</span>
+        <span class="px-4">Policy Drafting</span>
+        <span class="px-4">LGSARCMUN</span>
+      </div>
+    </section>
+
+    <section id="about" class="px-6 py-20">
+      <div class="max-w-7xl mx-auto grid lg:grid-cols-5 gap-8 items-start">
+        <div class="lg:col-span-2 reveal">
+          <p class="text-xs uppercase tracking-[0.35em] text-cyan-300/80">About Us</p>
+          <h2 class="serif text-4xl md:text-5xl font-bold mt-4 leading-tight">A society built for polished debate and real leadership.</h2>
+          <p class="mt-6 text-white/75 leading-relaxed text-base md:text-lg">
+            LGSARCMUN is the official Model United Nations society of Lahore Grammar School Architect Society Campus. We train delegates, host internal simulations, strengthen research skills, and prepare members for top-level national and internal conferences.
+          </p>
+        </div>
+
+        <div class="lg:col-span-3 grid md:grid-cols-2 gap-5 reveal">
+          <div class="glass rounded-[1.75rem] p-6 hover:scale-[1.02] transition">
+            <p class="text-white/55 text-xs uppercase tracking-[0.28em]">Training</p>
+            <h3 class="text-xl font-bold mt-2">Delegate Development</h3>
+            <p class="mt-3 text-white/70 leading-relaxed">Public speaking, research, stance building, speech writing, and moderated caucus performance.</p>
+          </div>
+          <div class="glass rounded-[1.75rem] p-6 hover:scale-[1.02] transition">
+            <p class="text-white/55 text-xs uppercase tracking-[0.28em]">Simulation</p>
+            <h3 class="text-xl font-bold mt-2">Crisis & UNSC</h3>
+            <p class="mt-3 text-white/70 leading-relaxed">Fast-paced crisis rooms and advanced security council strategy for high-pressure diplomacy.</p>
+          </div>
+          <div class="glass rounded-[1.75rem] p-6 hover:scale-[1.02] transition">
+            <p class="text-white/55 text-xs uppercase tracking-[0.28em]">Growth</p>
+            <h3 class="text-xl font-bold mt-2">Leadership Grooming</h3>
+            <p class="mt-3 text-white/70 leading-relaxed">Confidence, teamwork, initiative, and a modern professional mindset.</p>
+          </div>
+          <div class="glass rounded-[1.75rem] p-6 hover:scale-[1.02] transition bg-gradient-to-br from-purple-500/15 to-cyan-500/10">
+            <p class="text-white/55 text-xs uppercase tracking-[0.28em]">Identity</p>
+            <h3 class="text-xl font-bold mt-2">Premium Society Presence</h3>
+            <p class="mt-3 text-white/70 leading-relaxed">A modern digital presence that feels sharp, credible, and visually elite.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="px-6 pb-20">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end justify-between gap-6 mb-8 reveal">
+          <div>
+            <p class="text-xs uppercase tracking-[0.35em] text-purple-300/80">Features</p>
+            <h2 class="serif text-4xl md:text-5xl font-bold mt-3">Modern features, built into the experience.</h2>
+          </div>
+          <a href="#join" class="hidden md:inline-flex rounded-full glass px-5 py-3 text-sm font-semibold hover:bg-white/10 transition">Join the next wave</a>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-5 reveal">
+          <div class="glass rounded-[2rem] p-7 hover:-translate-y-1 hover:scale-[1.01] transition duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center text-xl">✦</div>
+            <h3 class="text-2xl font-bold mt-5">Elegant Motion</h3>
+            <p class="mt-3 text-white/70 leading-relaxed">Subtle hover zoom, smooth reveal animations, and a floating premium feel.</p>
+          </div>
+
+          <div class="glass rounded-[2rem] p-7 hover:-translate-y-1 hover:scale-[1.01] transition duration-300 bg-gradient-to-br from-white/8 to-cyan-500/10">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center text-xl">◌</div>
+            <h3 class="text-2xl font-bold mt-5">Glass Interface</h3>
+            <p class="mt-3 text-white/70 leading-relaxed">Blurred layers and soft borders that give the page a high-end, current design language.</p>
+          </div>
+
+          <div class="glass rounded-[2rem] p-7 hover:-translate-y-1 hover:scale-[1.01] transition duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-xl">⟡</div>
+            <h3 class="text-2xl font-bold mt-5">Smart Sections</h3>
+            <p class="mt-3 text-white/70 leading-relaxed">About, features, timeline, council, and join flow all in one premium layout.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="achievements" class="px-6 py-20">
+      <div class="max-w-7xl mx-auto grid lg:grid-cols-5 gap-8 items-start">
+        <div class="lg:col-span-2 reveal">
+          <p class="text-xs uppercase tracking-[0.35em] text-emerald-300/80">Achievements</p>
+          <h2 class="serif text-4xl md:text-5xl font-bold mt-4 leading-tight">A growing record of participation and progress.</h2>
+          <p class="mt-5 text-white/75 leading-relaxed">
+            From internal growth to national conferences, the society keeps building momentum with every session, simulation, and conference season.
+          </p>
+        </div>
+
+        <div class="lg:col-span-3 reveal">
+          <div class="relative pl-8 md:pl-10 border-l border-white/10 space-y-8">
+            <div class="relative">
+              <div class="absolute -left-[2.15rem] md:-left-[2.35rem] top-1.5 w-4 h-4 rounded-full bg-purple-400 shadow-[0_0_20px_rgba(168,85,247,.7)]"></div>
+              <div class="glass rounded-[1.75rem] p-6 hover:scale-[1.01] transition">
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">2023</span>
+                  <h3 class="text-xl font-bold">First major participation wave</h3>
+                </div>
+                <p class="mt-3 text-white/70">TSMUN, UCPMUN Lahore, and early conference exposure helped establish the society’s direction.</p>
+              </div>
+            </div>
+
+            <div class="relative">
+              <div class="absolute -left-[2.15rem] md:-left-[2.35rem] top-1.5 w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,.7)]"></div>
+              <div class="glass rounded-[1.75rem] p-6 hover:scale-[1.01] transition">
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">2024</span>
+                  <h3 class="text-xl font-bold">National presence expanded</h3>
+                </div>
+                <p class="mt-3 text-white/70">Delegates attended multiple conferences, building confidence and competitive performance across committees.</p>
+              </div>
+            </div>
+
+            <div class="relative">
+              <div class="absolute -left-[2.15rem] md:-left-[2.35rem] top-1.5 w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(74,222,128,.7)]"></div>
+              <div class="glass rounded-[1.75rem] p-6 hover:scale-[1.01] transition bg-gradient-to-br from-emerald-400/10 to-purple-500/10">
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">2025</span>
+                  <h3 class="text-xl font-bold">Crisis and UNSC focus</h3>
+                </div>
+                <p class="mt-3 text-white/70">Internal strategic simulations, high-level debate sessions, and policy-oriented training matured the society further.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="council" class="px-6 py-20">
+      <div class="max-w-7xl mx-auto">
+        <div class="reveal mb-8">
+          <p class="text-xs uppercase tracking-[0.35em] text-cyan-300/80">Executive Council</p>
+          <h2 class="serif text-4xl md:text-5xl font-bold mt-3">The team behind the vision.</h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 reveal">
+          <div class="glass rounded-[2rem] p-7 text-center hover:scale-[1.03] hover:-translate-y-1 transition duration-300">
+            <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-purple-500 to-cyan-400 p-[2px]">
+              <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-3xl font-black">SA</div>
+            </div>
+            <h3 class="text-2xl font-bold mt-5">Shayan Ahmad</h3>
+            <p class="mt-1 text-purple-300 font-semibold">President</p>
+            <p class="mt-4 text-white/70">Leadership, planning, and conference vision.</p>
+          </div>
+
+          <div class="glass rounded-[2rem] p-7 text-center hover:scale-[1.03] hover:-translate-y-1 transition duration-300 bg-gradient-to-br from-white/8 to-purple-500/10">
+            <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 p-[2px]">
+              <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-3xl font-black">MS</div>
+            </div>
+            <h3 class="text-2xl font-bold mt-5">Muhammad Shahan Hussain</h3>
+            <p class="mt-1 text-cyan-300 font-semibold">President</p>
+            <p class="mt-4 text-white/70">Society growth, execution, and public image.</p>
+          </div>
+
+          <div class="glass rounded-[2rem] p-7 text-center hover:scale-[1.03] hover:-translate-y-1 transition duration-300">
+            <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 p-[2px]">
+              <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-3xl font-black">HF</div>
+            </div>
+            <h3 class="text-2xl font-bold mt-5">Huzaifa Fawad</h3>
+            <p class="mt-1 text-emerald-300 font-semibold">Secretary General</p>
+            <p class="mt-4 text-white/70">Operations, committee structure, and coordination.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 py-20">
+      <div class="max-w-7xl mx-auto glass rounded-[2.25rem] p-8 md:p-10 overflow-hidden relative reveal">
+        <div class="absolute inset-0 pointer-events-none">
+          <div class="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-cyan-500/15 blur-3xl"></div>
+          <div class="absolute -left-20 bottom-0 w-72 h-72 rounded-full bg-purple-500/15 blur-3xl"></div>
+        </div>
+        <div class="relative grid lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <p class="text-xs uppercase tracking-[0.35em] text-white/55">Why join</p>
+            <h2 class="serif text-4xl md:text-5xl font-bold mt-3 leading-tight">Build confidence, presence, and a sharper voice.</h2>
+            <p class="mt-5 text-white/75 leading-relaxed">
+              Join a place where debate feels refined, preparation feels serious, and every member has room to grow.
+            </p>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="rounded-3xl bg-white/5 border border-white/10 p-5 hover:scale-[1.02] transition">
+              <h3 class="font-bold text-lg">Public Speaking</h3>
+              <p class="mt-2 text-white/70 text-sm">Learn to speak with clarity and confidence.</p>
+            </div>
+            <div class="rounded-3xl bg-white/5 border border-white/10 p-5 hover:scale-[1.02] transition">
+              <h3 class="font-bold text-lg">Research</h3>
+              <p class="mt-2 text-white/70 text-sm">Develop strong issue awareness and policy depth.</p>
+            </div>
+            <div class="rounded-3xl bg-white/5 border border-white/10 p-5 hover:scale-[1.02] transition">
+              <h3 class="font-bold text-lg">Negotiation</h3>
+              <p class="mt-2 text-white/70 text-sm">Sharpen compromise and diplomatic strategy.</p>
+            </div>
+            <div class="rounded-3xl bg-white/5 border border-white/10 p-5 hover:scale-[1.02] transition">
+              <h3 class="font-bold text-lg">Leadership</h3>
+              <p class="mt-2 text-white/70 text-sm">Grow as a leader inside and outside committee rooms.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="join" class="px-6 py-20">
+      <div class="max-w-3xl mx-auto reveal">
+        <div class="text-center mb-8">
+          <p class="text-xs uppercase tracking-[0.35em] text-purple-300/80">Join Us</p>
+          <h2 class="serif text-4xl md:text-5xl font-bold mt-3">Apply to be part of LGSARCMUN.</h2>
+          <p class="mt-4 text-white/70">Submit your details and motivation below.</p>
+        </div>
+
+        <form action="https://formspree.io/f/xgolglka" method="POST" class="glass rounded-[2rem] p-6 md:p-8 space-y-5">
+          <div class="grid md:grid-cols-2 gap-5">
+            <input type="text" name="name" placeholder="Name" required class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 transition placeholder:text-white/40">
+            <input type="text" name="grade" placeholder="Grade" required class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 transition placeholder:text-white/40">
+          </div>
+
+          <input type="email" name="email" placeholder="Email" required class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition placeholder:text-white/40">
+
+          <textarea name="motivation" rows="6" placeholder="Why do you want to join?" required class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 transition placeholder:text-white/40 resize-none"></textarea>
+
+          <button type="submit" class="w-full btn-shine rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-cyan-500 px-6 py-4 font-bold text-white hover:scale-[1.01] active:scale-[0.99] transition">
+            Submit Application
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="relative z-10 px-6 pb-10">
+    <div class="max-w-7xl mx-auto glass rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60">
+      <p>© 2026 LGSARCMUN | Lahore Grammar School Architect Society Campus | Lahore, Pakistan</p>
+      <div class="flex items-center gap-4">
+        <a href="#home" class="hover:text-white transition">Back to top</a>
+        <span class="text-white/20">•</span>
+        <a href="#join" class="hover:text-white transition">Apply now</a>
+      </div>
     </div>
-  </div>
-
-</section>
-  
-
-<!-- JOIN US -->
-<section id="join-form" class="bg-[#151a39] py-20 px-6">
-  <div class="max-w-md mx-auto">
-
-    <h2 class="font-serif text-3xl mb-8 text-center">Join LGSNIMUN</h2>
-
-  <form 
-  action="https://formspree.io/f/xgolglka" 
-  method="POST"
-  class="bg-black/50 backdrop-blur-md p-8 rounded-xl border border-[#5644a1] flex flex-col gap-6 shadow-lg"
->
-  <input 
-    type="text" 
-    name="name" 
-    placeholder="Name" 
-    class="bg-transparent border border-[#5644a1] rounded-lg px-4 py-3 placeholder-white/70 text-white focus:border-[#a26cff] focus:outline-none transition"
-    required
-  >
-
-  <input 
-    type="text" 
-    name="grade" 
-    placeholder="Grade" 
-    class="bg-transparent border border-[#5644a1] rounded-lg px-4 py-3 placeholder-white/70 text-white focus:border-[#a26cff] focus:outline-none transition"
-    required
-  >
-
-  <input 
-    type="email" 
-    name="email" 
-    placeholder="Email" 
-    class="bg-transparent border border-[#5644a1] rounded-lg px-4 py-3 placeholder-white/70 text-white focus:border-[#a26cff] focus:outline-none transition"
-    required
-  >
-
-  <textarea 
-    name="motivation" 
-    rows="5" 
-    placeholder="Why do you want to join?" 
-    class="bg-transparent border border-[#5644a1] rounded-lg px-4 py-3 placeholder-white/70 text-white focus:border-[#a26cff] focus:outline-none transition resize-none"
-    required
-  ></textarea>
-
-  <button 
-    type="submit" 
-    class="bg-[#5644a1] hover:bg-[#a26cff] transition text-white font-semibold rounded-lg py-3 shadow-md"
-  >
-    Submit Application
-  </button>
-</form>
-
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="bg-black py-6 text-center text-white/60 text-sm">
-  © 2026 LGSNIMUN | Lahore Grammar School Nasheman-e-Iqbal | Lahore, Pakistan
-</footer>
-
-<!-- Counter Animation Script -->
-<script>
-  const counters = document.querySelectorAll('[data-target]');
-
-  counters.forEach(counter => {
-    const updateCount = () => {
-      const target = +counter.getAttribute('data-target');
-      const count = +counter.innerText;
-      const increment = target / 100;
-
-      if (count < target) {
-        counter.innerText = Math.ceil(count + increment);
-        setTimeout(updateCount, 20);
-      } else {
-        counter.innerText = target;
-      }
-    };
-
-    updateCount();
-  });
-</script>
+  </footer>
 
   <script>
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      target.scrollIntoView({ behavior: 'smooth' });
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // Smooth anchor handling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
     });
-  });
-</script>
-  
 
+    // Spotlight follow
+    const spotlight = document.getElementById('spotlight');
+    window.addEventListener('mousemove', (e) => {
+      if (!spotlight) return;
+      spotlight.classList.remove('hidden');
+      spotlight.style.left = e.clientX + 'px';
+      spotlight.style.top = e.clientY + 'px';
+    });
+
+    // Counter animation
+    const counters = document.querySelectorAll('[data-target]');
+    const countUp = (el) => {
+      const target = parseInt(el.getAttribute('data-target'), 10) || 0;
+      let current = 0;
+      const step = Math.max(1, Math.ceil(target / 90));
+      const tick = () => {
+        current += step;
+        if (current >= target) {
+          el.textContent = target;
+          return;
+        }
+        el.textContent = current;
+        requestAnimationFrame(tick);
+      };
+      tick();
+    };
+
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.dataset.done) {
+          entry.target.dataset.done = "1";
+          countUp(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(counter => counterObserver.observe(counter));
+  </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
