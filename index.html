@@ -94,7 +94,7 @@
         </div>
         <!-- Society figures retained from the supplied homepage. Update values and data-count together. -->
         <div class="stats" aria-label="Society at a glance">
-          <div class="stat"><div class="stat-number"><span data-count="78">78</span><span class="plus">+</span></div><p>Members</p></div>
+          <div class="stat"><div class="stat-number"><span data-count="40">40</span><span class="plus">+</span></div><p>Members</p></div>
           <div class="stat"><div class="stat-number"><span data-count="22">22</span><span class="plus">+</span></div><p>Conferences</p></div>
           <div class="stat"><div class="stat-number"><span data-count="18">18</span><span class="plus">+</span></div><p>Awards</p></div>
           <div class="stat"><div class="stat-number"><span data-count="12">12</span><span class="plus">+</span></div><p>Committees</p></div>
@@ -144,15 +144,18 @@
     </section>
     <section class="section join" id="join" aria-labelledby="join-heading">
       <div class="container join-grid">
-        <div class="join-intro reveal"><p class="eyebrow section-marker">05 / Become a member</p><h2 id="join-heading">Your next chapter<br>starts here.</h2><p>Tell us who you are and why you want to join LGS ARCMUN. Bring your curiosity. Build your voice.</p><div class="join-contact"><span>Questions about the society?</span><a href="mailto:lgsarcmun@gmail.com">lgsarcmun@gmail.com</a></div></div>
-        <!-- Existing Formspree endpoint preserved. Native POST works when JavaScript is unavailable. -->
-        <form id="application-form" class="application reveal delay-1" action="https://formspree.io/f/xgolglka" method="POST">
+        <div class="join-intro reveal"><p class="eyebrow section-marker">05 / Get involved</p><h2 id="join-heading">Your next chapter<br>starts here.</h2><p>Tell us a little about yourself and your interests. We welcome students who are curious about debate, global affairs, leadership and teamwork.</p><div class="join-contact"><span>Questions about the society?</span><a href="mailto:lgsarcmun@gmail.com">lgsarcmun@gmail.com</a></div></div>
+        <!-- Native POST is the reliable Formspree path; it also works when JavaScript is blocked. -->
+        <form id="application-form" class="application reveal delay-1" action="https://formspree.io/f/xgolglka" method="POST" accept-charset="UTF-8">
+          <input type="hidden" name="_subject" value="New LGS ARCMUN Society enquiry">
+          <input type="hidden" name="_next" value="https://lgsarcmun.vercel.app/?submitted=1#join">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
           <div class="form-status" id="form-status" role="status" aria-live="polite" tabindex="-1" hidden></div>
-          <div class="form-row"><div class="field"><label for="full-name">Full name</label><input id="full-name" name="name" type="text" autocomplete="name" placeholder="Your full name" maxlength="120" required></div><div class="field"><label for="grade">Grade</label><input id="grade" name="grade" type="text" placeholder="e.g. IX" maxlength="30" required></div></div>
+          <div class="form-row"><div class="field"><label for="full-name">Name</label><input id="full-name" name="name" type="text" autocomplete="name" placeholder="Your name" maxlength="120" required></div><div class="field"><label for="grade">Grade / class</label><input id="grade" name="grade" type="text" placeholder="e.g. IX" maxlength="30" required></div></div>
           <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="254" required></div>
-          <div class="field"><label for="motivation">Why would you like to join?</label><textarea id="motivation" name="motivation" rows="5" placeholder="Tell us what interests you about MUN…" maxlength="5000" required></textarea></div>
-          <button class="btn btn-primary submit" type="submit"><span id="submit-label">Submit application</span><svg class="icon" aria-hidden="true"><use href="#arrow-up-right"/></svg></button>
-          <p class="form-caption">Your details will be sent to the society through Formspree.</p>
+          <div class="field"><label for="motivation">Message</label><textarea id="motivation" name="message" rows="5" placeholder="Tell us a little about yourself, your interests, or how you would like to get involved…" maxlength="5000" required></textarea></div>
+          <button class="btn btn-primary submit" type="submit"><span id="submit-label">Send message</span><svg class="icon" aria-hidden="true"><use href="#arrow-up-right"/></svg></button>
+          <p class="form-caption">Your message will be sent securely to the society through Formspree.</p>
         </form>
       </div>
     </section>
@@ -237,40 +240,26 @@
         document.querySelectorAll('main section[id]').forEach(section => sectionObserver.observe(section));
       }
 
-      // Only a confirmed successful response produces a success message.
+      // Use Formspree's native POST path so the form still works without fetch or CORS.
+      // The endpoint redirects back with ?submitted=1 after a successful submission.
       const form = document.getElementById('application-form');
-      if (window.fetch && window.FormData && window.AbortController) {
-        form.addEventListener('submit', async event => {
-          event.preventDefault();
-          const button = form.querySelector('button[type="submit"]');
-          if (button.disabled || !form.reportValidity()) return;
-          const status = document.getElementById('form-status');
-          const label = document.getElementById('submit-label');
-          button.disabled = true;
-          form.setAttribute('aria-busy', 'true');
-          label.textContent = 'Sending application…';
-          status.hidden = true;
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 20000);
-          try {
-            const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }, signal: controller.signal });
-            if (!response.ok) throw new Error('The submission was not confirmed.');
-            status.dataset.state = 'success';
-            status.textContent = 'Application received. Thank you for your interest in LGS ARCMUN.';
-            form.reset();
-          } catch (error) {
-            status.dataset.state = 'error';
-            status.textContent = 'We could not confirm your submission. Your details are still here. Please check your connection, or email lgsarcmun@gmail.com before submitting again.';
-          } finally {
-            clearTimeout(timeout);
-            button.disabled = false;
-            form.removeAttribute('aria-busy');
-            label.textContent = 'Submit application';
-            status.hidden = false;
-            status.focus();
-          }
-        });
+      const formStatus = document.getElementById('form-status');
+      const query = new URLSearchParams(window.location.search);
+      if (query.get('submitted') === '1') {
+        formStatus.dataset.state = 'success';
+        formStatus.textContent = 'Message received. Thank you for contacting LGS ARCMUN.';
+        formStatus.hidden = false;
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete('submitted');
+        window.history.replaceState({}, document.title, cleanUrl.pathname + cleanUrl.hash);
       }
+      form.addEventListener('submit', () => {
+        const button = form.querySelector('button[type="submit"]');
+        if (!form.reportValidity() || button.disabled) return;
+        button.disabled = true;
+        form.setAttribute('aria-busy', 'true');
+        document.getElementById('submit-label').textContent = 'Sending message…';
+      });
       document.getElementById('copyright-year').textContent = String(new Date().getFullYear());
     })();
   </script>
